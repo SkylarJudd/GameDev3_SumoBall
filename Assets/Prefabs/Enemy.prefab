@@ -150,7 +150,7 @@ Rigidbody:
   m_GameObject: {fileID: 6557713272400765913}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 0.01
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -182,6 +182,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   playerGameObjectName: Player
+  chargeSpeed: 1000
+  enermyVisuals: {fileID: 0}
 --- !u!114 &6110357126501768269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,6 +205,55 @@ MonoBehaviour:
   RotationAngle: 25
   AngularImpulse: 120
   DrawAffectedReactorFieldGizmos: 0
+--- !u!1 &8841266776728478358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3988783663699138264}
+  - component: {fileID: 5607624518563149905}
+  m_Layer: 0
+  m_Name: 'DynamicCollider '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3988783663699138264
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841266776728478358}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.363, z: 0.215}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6758181682479803707}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5607624518563149905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841266776728478358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baedd976e12657241bf7ff2d1c685342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_Bound: 0
+  m_Radius: 0.5
+  m_Height: 0
 --- !u!1001 &6504142421624867536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -261,7 +312,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2d9585d1c347a734fb2cbdcc54633525, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3988783663699138264}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4343445010303189358, guid: 2d9585d1c347a734fb2cbdcc54633525, type: 3}
       insertIndex: -1
@@ -461,14 +515,14 @@ MonoBehaviour:
   m_Root: {fileID: 2365193504371867373}
   m_UpdateRate: 30
   m_UpdateMode: 0
-  m_Damping: 0.021
+  m_Damping: 0.156
   m_DampingDistrib:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Elasticity: 0.002
+  m_Elasticity: 0.747
   m_ElasticityDistrib:
     serializedVersion: 2
     m_Curve:
@@ -493,7 +547,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Stiffness: 0.73
+  m_Stiffness: 0.19
   m_StiffnessDistrib:
     serializedVersion: 2
     m_Curve:
@@ -518,25 +572,53 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Inert: 0.464
+  m_Inert: 0.228
   m_InertDistrib:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Radius: 0
+  m_Radius: 0.003
   m_RadiusDistrib:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.008869171
+      value: 0.5740051
+      inSlope: 0.9414544
+      outSlope: 0.9414544
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.38977942
+      value: 0.9493146
+      inSlope: 0.28168344
+      outSlope: 0.28168344
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2880604
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9778137
+      value: 0.5306854
+      inSlope: -2.3110492
+      outSlope: -2.3110492
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.118219525
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   m_EndLength: 0
   m_EndOffset: {x: 0, y: 0, z: 0}
-  m_Gravity: {x: 0, y: -18, z: 0}
+  m_Gravity: {x: 0, y: -0.1, z: 0}
   m_Force: {x: 0, y: 0, z: 0}
-  m_Colliders: []
+  m_Colliders:
+  - {fileID: 5607624518563149905}
   m_Exclusions: []
   m_FreezeAxis: 0
   m_DistantDisable: 0

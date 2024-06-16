@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpawnMannager : MonoBehaviour
 {
-    [SerializeField] GameObject enemyPrefab;
-    [SerializeField] GameObject powerup_KnockBackPrefab;
+    [SerializeField] GameObject[] enemyPrefab;
+    [SerializeField] GameObject[] powerup_KnockBackPrefab;
 
     [SerializeField] int enemyCount;
 
@@ -33,11 +33,12 @@ public class SpawnMannager : MonoBehaviour
 
         }
     }
-    private void SpawnObjectRandom(int objectAmout, GameObject prefabToSpawn)
+    private void SpawnObjectRandom(int objectAmout, GameObject[] prefabToSpawn)
     {
         for (int i = 0; i < objectAmout; i++)
         {
-            Instantiate(prefabToSpawn, GenerateRandomSpawnPos(), prefabToSpawn.transform.rotation);
+            int index = Random.Range(0, prefabToSpawn.Length);
+            Instantiate(prefabToSpawn[index], GenerateRandomSpawnPos(), prefabToSpawn[index].transform.rotation * Quaternion.Euler(0, Random.Range(0, 360), 0));
         }
     }
 
