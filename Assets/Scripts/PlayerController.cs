@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float explosionRadius = 5f; // The radius of the explosion
     [SerializeField] float upwardsModifier = 1f; // The upwards modifier for the explosion force
 
+    [SerializeField] CamraShake camraShake;
+
     private float _knockbackStrength = 2;
 
     private Rigidbody _playerRB;
@@ -80,7 +82,11 @@ public class PlayerController : MonoBehaviour
 
 
             Transform _parentTransform = other.gameObject.transform.parent;
-            Destroy(_parentTransform.gameObject);
+            GameObject powerUpObject = _parentTransform.gameObject;
+            SpawnMannager.SM_Instance.pickups.Remove(powerUpObject);
+            Destroy(powerUpObject);
+            
+
 
             if (_knockBackPickupCoroutine != null)
             {
@@ -92,7 +98,9 @@ public class PlayerController : MonoBehaviour
         {
 
             Transform _parentTransform = other.gameObject.transform.parent;
-            Destroy(_parentTransform.gameObject);
+            GameObject powerUpObject = _parentTransform.gameObject;
+            SpawnMannager.SM_Instance.pickups.Remove(powerUpObject);
+            Destroy(powerUpObject);
 
             powerUpIdicator[1].SetActive(true);
             hasPowerUpTwo = true;
@@ -120,6 +128,7 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(0.2f);
         ApplyExplosionForce();
+        camraShake.ShakeCamera(5.0f);
 
 
     }
@@ -137,10 +146,12 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag(enemyTag) && hasPowerUp)
         {
             addknockBacktoEnermy(collision.gameObject, _powerUp_knockbackStrength);
+            camraShake.ShakeCamera(5.0f);
         }
         else if (collision.gameObject.CompareTag(enemyTag) && !hasPowerUp)
         {
             addknockBacktoEnermy(collision.gameObject, _knockbackStrength);
+            camraShake.ShakeCamera(1.5f);
         }
 
     }

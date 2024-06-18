@@ -51,14 +51,7 @@ public class GameMannager : MonoBehaviour
     public void PlayerDoADie()
     {
 
-        //for (int i = 0; i <= SpawnMannager.SM_Instance.enemies.Count; i++)
-        //{
-
-        //    GameObject enemyOnject = SpawnMannager.SM_Instance.enemies[i];
-        //    SpawnMannager.SM_Instance.enemies.Remove(enemyOnject);
-        //    Destroy(enemyOnject);
-        //}
-
+        
         List<GameObject> enemiesToRemove = new List<GameObject>();
 
         foreach (GameObject enemyObject in SpawnMannager.SM_Instance.enemies)
@@ -70,6 +63,19 @@ public class GameMannager : MonoBehaviour
         {
             SpawnMannager.SM_Instance.enemies.Remove(enemyObject);
             Destroy(enemyObject);
+        }
+
+        List<GameObject> pickUpsToRemove = new List<GameObject>();
+
+        foreach (GameObject pickupObject in SpawnMannager.SM_Instance.pickups)
+        {
+            pickUpsToRemove.Add(pickupObject);
+        }
+
+        foreach (GameObject pickupObject in pickUpsToRemove)
+        {
+            SpawnMannager.SM_Instance.pickups.Remove(pickupObject);
+            Destroy(pickupObject);
         }
 
         waveNumber = 0;

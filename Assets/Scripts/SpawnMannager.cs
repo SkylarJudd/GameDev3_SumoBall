@@ -12,6 +12,7 @@ public class SpawnMannager : MonoBehaviour
     public event EventHandler OnEnemySpawn;
 
     public List<GameObject> enemies = new List<GameObject>();
+    public List<GameObject> pickups = new List<GameObject>();
 
 
     [SerializeField] GameObject[] enemyPrefab;
@@ -90,6 +91,11 @@ public class SpawnMannager : MonoBehaviour
                 print("EnemySpawnned Event Fired");
                 OnEnemySpawn?.Invoke(this, EventArgs.Empty);
             }
+            else
+            {
+                pickups.Add(spawnedObject);
+            }
+
         }
     }
 
