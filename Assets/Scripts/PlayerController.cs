@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private Coroutine _knockBackPickupCoroutine;
     private Coroutine _groundPoundPickupCoroutine;
 
-    private int activePowerup;
+   
 
 
 
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
             hasPowerUp = true;
 
             powerUpIdicator[0].SetActive(true);
-            activePowerup = 0;
+            
 
             Transform _parentTransform = other.gameObject.transform.parent;
             Destroy(_parentTransform.gameObject);

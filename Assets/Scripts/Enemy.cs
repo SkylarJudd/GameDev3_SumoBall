@@ -105,6 +105,7 @@ public class Enemy : MonoBehaviour
 
     private void Destroy()
     {
+        GameMannager.GM_Instance.EnemyDoADie();
         Destroy(gameObject);
     }
 

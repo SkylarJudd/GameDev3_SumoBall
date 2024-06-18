@@ -1,54 +1,116 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System;
 
 public class SpawnMannager : MonoBehaviour
 {
+
+    public static SpawnMannager SM_Instance { get; private set; }
+
+    public event EventHandler OnEnemySpawn;
+
+
     [SerializeField] GameObject[] enemyPrefab;
     [SerializeField] GameObject[] powerup_KnockBackPrefab;
 
     [SerializeField] int enemyCount;
 
+    [SerializeField] TMPro.TMP_Text levelText;
+
     private float _randomSpawnRange = 9;
-    private int _waveNumber = 1;
     private int _powerUpsToSpawn = 1;
+
+
+    private void Awake()
+    {
+        if (SM_Instance != null && SM_Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            SM_Instance = this;
+        }
+    }
 
     private void Start()
     {
-
-        SpawnObjectRandom(_waveNumber, enemyPrefab);
-        SpawnObjectRandom(_powerUpsToSpawn, powerup_KnockBackPrefab);
-
+        if(GameMannager.GM_Instance != null)
+        {
+            SpawnObjectRandom(GameMannager.GM_Instance.GetWaveNumber(), enemyPrefab);
+            SpawnObjectRandom(_powerUpsToSpawn, powerup_KnockBackPrefab);
+        }
+        else
+        {
+            Debug.LogError("GameMannager Not Found");
+        }
     }
 
     private void Update()
     {
+        OnLevelChange();
+    }
+
+    private void OnLevelChange()
+    {
         enemyCount = FindObjectsOfType<Enemy>().Length;
 
-        if ( enemyCount == 0 )
+        if (enemyCount == 0)
         {
-            _waveNumber++;
-            SpawnObjectRandom(_waveNumber , enemyPrefab);
-            SpawnObjectRandom(_powerUpsToSpawn, powerup_KnockBackPrefab);
-
+            if (GameMannager.GM_Instance != null)
+            {
+                GameMannager.GM_Instance.AddToWaveNumber(1);
+                levelText.text = "CURRENT LEVEL: " + GameMannager.GM_Instance.GetWaveNumber().ToString();
+                SpawnObjectRandom(GameMannager.GM_Instance.GetWaveNumber(), enemyPrefab);
+                SpawnObjectRandom(_powerUpsToSpawn, powerup_KnockBackPrefab);
+            }
+            else
+            {
+                Debug.LogError("GameMannager Not Found");
+            }
         }
     }
+
     private void SpawnObjectRandom(int objectAmout, GameObject[] prefabToSpawn)
     {
+        bool enemyEventSend;
+        if (prefabToSpawn[0].gameObject.GetComponent<Enemy>() != null )
+        {
+            enemyEventSend = true;
+        }
+        else
+        {
+            enemyEventSend = false;
+        }
+
+        
+
         for (int i = 0; i < objectAmout; i++)
         {
-            int index = Random.Range(0, prefabToSpawn.Length);
-            Instantiate(prefabToSpawn[index], GenerateRandomSpawnPos(), prefabToSpawn[index].transform.rotation * Quaternion.Euler(0, Random.Range(0, 360), 0));
+            int index = UnityEngine.Random.Range(0, prefabToSpawn.Length);
+            Instantiate(prefabToSpawn[index], GenerateRandomSpawnPos(), prefabToSpawn[index].transform.rotation * Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0));
+            if (enemyEventSend && OnEnemySpawn != null)
+            {
+                print("EnemySpawnned Event Fired");
+                OnEnemySpawn?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 
     private Vector3 GenerateRandomSpawnPos()
     {
-        float _spawnPositionX = Random.Range(-_randomSpawnRange, _randomSpawnRange);
-        float _spawnPositionZ = Random.Range(-_randomSpawnRange, _randomSpawnRange);
+        float _spawnPositionX = UnityEngine.Random.Range(-_randomSpawnRange, _randomSpawnRange);
+        float _spawnPositionZ = UnityEngine.Random.Range(-_randomSpawnRange, _randomSpawnRange);
 
         Vector3 _randomPos = new Vector3(_spawnPositionX, 0, _spawnPositionZ);
 
         return _randomPos;
-    }    
+    }
+
+    private void OnDestroy()
+    {
+        SM_Instance = null;
+    }
 }
