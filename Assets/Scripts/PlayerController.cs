@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] bool hasPowerUp = false;
     [SerializeField] bool hasPowerUpTwo = false;
-    
+
 
     [SerializeField] float explosionForce = 1000f; // The force of the explosion
     [SerializeField] float explosionRadius = 5f; // The radius of the explosion
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private Coroutine _knockBackPickupCoroutine;
     private Coroutine _groundPoundPickupCoroutine;
 
-   
+
 
 
 
@@ -63,6 +63,11 @@ public class PlayerController : MonoBehaviour
             powerUpIdicator[1].transform.position = transform.position + _powerupTwoOffSet;
             powerUpIdicator[1].transform.Rotate(Vector3.up, _powerUpRotationSpeed * Time.deltaTime);
         }
+
+        if (transform.position.y < GameMannager.GM_Instance.killHight)
+        {
+            PlayerReset();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -72,7 +77,7 @@ public class PlayerController : MonoBehaviour
             hasPowerUp = true;
 
             powerUpIdicator[0].SetActive(true);
-            
+
 
             Transform _parentTransform = other.gameObject.transform.parent;
             Destroy(_parentTransform.gameObject);
@@ -103,18 +108,18 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator GroundPoundCoolDown()
     {
-             print("Player picked up ground poound");
-             _playerRB.useGravity = false;
-             _playerRB.AddForce(Vector3.up * 20f, ForceMode.Impulse);
+        print("Player picked up ground poound");
+        _playerRB.useGravity = false;
+        _playerRB.AddForce(Vector3.up * 20f, ForceMode.Impulse);
 
         yield return new WaitForSeconds(3);
-             powerUpIdicator[1].SetActive(false);
-             hasPowerUpTwo = true;
-             _playerRB.useGravity = true;
-             _playerRB.AddForce(Vector3.down * 100f, ForceMode.Impulse);
+        powerUpIdicator[1].SetActive(false);
+        hasPowerUpTwo = true;
+        _playerRB.useGravity = true;
+        _playerRB.AddForce(Vector3.down * 100f, ForceMode.Impulse);
 
         yield return new WaitForSeconds(0.2f);
-             ApplyExplosionForce();
+        ApplyExplosionForce();
 
 
     }
@@ -122,9 +127,9 @@ public class PlayerController : MonoBehaviour
     IEnumerator KnockBackPowerUpCountDown()
     {
         yield return new WaitForSeconds(7);
-            hasPowerUp = false;
-            powerUpIdicator[0].SetActive(false);
-            StopCoroutine(_knockBackPickupCoroutine);
+        hasPowerUp = false;
+        powerUpIdicator[0].SetActive(false);
+        StopCoroutine(_knockBackPickupCoroutine);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -171,5 +176,11 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void PlayerReset()
+    {
+        GameMannager.GM_Instance.PlayerDoADie();
+        gameObject.transform.position = new Vector3(0, 1, 0);
     }
 }

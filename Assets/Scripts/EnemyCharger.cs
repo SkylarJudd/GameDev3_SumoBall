@@ -7,6 +7,7 @@ public class EnemyCharger : Enemy
     public override bool charging()
     {
         return true;
+       
     }
 
 }

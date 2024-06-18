@@ -14,8 +14,6 @@ public class Enemy : MonoBehaviour
     private Rigidbody _enemyRB;
     private GameObject _player;
 
-    private float killHight = -10f;
-
     private Coroutine _chargecCoroutine;
 
     private bool chargeStarted = false;
@@ -66,7 +64,7 @@ public class Enemy : MonoBehaviour
         Vector3 _lookdirection = (_player.transform.position - transform.position).normalized;
         _enemyRB.AddForce(_lookdirection * (speed * 100) * Time.deltaTime);
 
-        if (transform.position.y < killHight)
+        if (transform.position.y < GameMannager.GM_Instance.killHight)
         {
             Destroy();
         }
@@ -105,6 +103,7 @@ public class Enemy : MonoBehaviour
 
     private void Destroy()
     {
+        SpawnMannager.SM_Instance.enemies.Remove(gameObject);
         GameMannager.GM_Instance.EnemyDoADie();
         Destroy(gameObject);
     }

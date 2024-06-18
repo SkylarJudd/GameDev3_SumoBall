@@ -11,6 +11,8 @@ public class SpawnMannager : MonoBehaviour
 
     public event EventHandler OnEnemySpawn;
 
+    public List<GameObject> enemies = new List<GameObject>();
+
 
     [SerializeField] GameObject[] enemyPrefab;
     [SerializeField] GameObject[] powerup_KnockBackPrefab;
@@ -18,6 +20,8 @@ public class SpawnMannager : MonoBehaviour
     [SerializeField] int enemyCount;
 
     [SerializeField] TMPro.TMP_Text levelText;
+
+
 
     private float _randomSpawnRange = 9;
     private int _powerUpsToSpawn = 1;
@@ -37,40 +41,29 @@ public class SpawnMannager : MonoBehaviour
 
     private void Start()
     {
-        if(GameMannager.GM_Instance != null)
-        {
-            SpawnObjectRandom(GameMannager.GM_Instance.GetWaveNumber(), enemyPrefab);
-            SpawnObjectRandom(_powerUpsToSpawn, powerup_KnockBackPrefab);
-        }
-        else
-        {
-            Debug.LogError("GameMannager Not Found");
-        }
+        OnLevelChange();
     }
 
     private void Update()
     {
-        OnLevelChange();
+        
     }
 
-    private void OnLevelChange()
+    public void OnLevelChange()
     {
-        enemyCount = FindObjectsOfType<Enemy>().Length;
-
-        if (enemyCount == 0)
-        {
-            if (GameMannager.GM_Instance != null)
-            {
+        
+         if (GameMannager.GM_Instance != null)
+         {
                 GameMannager.GM_Instance.AddToWaveNumber(1);
                 levelText.text = "CURRENT LEVEL: " + GameMannager.GM_Instance.GetWaveNumber().ToString();
                 SpawnObjectRandom(GameMannager.GM_Instance.GetWaveNumber(), enemyPrefab);
                 SpawnObjectRandom(_powerUpsToSpawn, powerup_KnockBackPrefab);
-            }
-            else
-            {
+         }
+         else
+         {
                 Debug.LogError("GameMannager Not Found");
-            }
-        }
+         }
+        
     }
 
     private void SpawnObjectRandom(int objectAmout, GameObject[] prefabToSpawn)
@@ -90,9 +83,10 @@ public class SpawnMannager : MonoBehaviour
         for (int i = 0; i < objectAmout; i++)
         {
             int index = UnityEngine.Random.Range(0, prefabToSpawn.Length);
-            Instantiate(prefabToSpawn[index], GenerateRandomSpawnPos(), prefabToSpawn[index].transform.rotation * Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0));
+            GameObject spawnedObject = Instantiate(prefabToSpawn[index], GenerateRandomSpawnPos(), prefabToSpawn[index].transform.rotation * Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0));
             if (enemyEventSend && OnEnemySpawn != null)
             {
+                enemies.Add(spawnedObject);
                 print("EnemySpawnned Event Fired");
                 OnEnemySpawn?.Invoke(this, EventArgs.Empty);
             }
