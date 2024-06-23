@@ -64,6 +64,22 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9122604110990385924, guid: 119c88cd7dff02842b5e351a58de5746, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9122604110990385924, guid: 119c88cd7dff02842b5e351a58de5746, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9122604110990385924, guid: 119c88cd7dff02842b5e351a58de5746, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9122604110990385924, guid: 119c88cd7dff02842b5e351a58de5746, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.561
+      objectReference: {fileID: 0}
     - target: {fileID: 9151235801548226344, guid: 119c88cd7dff02842b5e351a58de5746, type: 3}
       propertyPath: m_Mesh
       value: 
