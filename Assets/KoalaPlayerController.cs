@@ -11,14 +11,36 @@ public class KoalaPlayerController : MonoBehaviour
     [SerializeField] Transform leftShoulder;
     [SerializeField] Transform rightShoulder;
 
+    [SerializeField] GameObject tree;
+
     [SerializeField] bool toggleHands;
     [SerializeField] float moveSpeed;
     [SerializeField] float maxRadius;
     [SerializeField] float driftSpeed = 0.5f; // Speed at which the hand drifts downward
     [SerializeField] float yOffset = 0f;
 
+    
+
+
     private Vector3 leftHandStartPos;
     private Vector3 rightHandStartPos;
+
+    private float drunkX;
+    private float drunkY;
+
+    private Vector3 drunkLerped;
+
+    private float drunkness;
+    private float energy;
+
+    private float rotateTreeOffset = 1f;
+
+    private Material treeMaterial; // The material of the tree's renderer
+    private Vector2 uvOffset = Vector2.zero; // The current UV offset of the tree texture
+
+
+
+
 
     float moveDirectionX;
     float moveDirectionY;
@@ -34,12 +56,31 @@ public class KoalaPlayerController : MonoBehaviour
             ToggleHands();
 
         UpdatePlayersBody();
+        RotateTree();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            drunkness = 1;
+            energy = 1;
+        }
     }
 
     void Start()
     {
         leftHandStartPos = leftHand.transform.position;
         rightHandStartPos = rightHand.transform.position;
+
+        StartCoroutine(drunkHands());
+        StartCoroutine(LerpDrunkHands());
+
+        if (tree != null)
+        {
+            Renderer treeRenderer = tree.GetComponent<Renderer>();
+            if (treeRenderer != null)
+            {
+                treeMaterial = treeRenderer.material;
+            }
+        }
     }
 
     private void UpdateLeftHand()
@@ -100,7 +141,7 @@ public class KoalaPlayerController : MonoBehaviour
             moveDirectionY = -driftSpeed * Time.deltaTime;
         }
 
-        Vector3 newPosition = hand.transform.position + new Vector3(moveDirectionX * Time.deltaTime * moveSpeed, moveDirectionY * Time.deltaTime * moveSpeed, 0);
+        Vector3 newPosition = hand.transform.position + new Vector3((moveDirectionX + drunkX) * Time.deltaTime * (moveSpeed * energy), (moveDirectionY + drunkY) * Time.deltaTime * (moveSpeed * energy), 0);
         Vector3 offset = newPosition - shoulderPos;
 
         if (offset.magnitude > maxRadius)
@@ -111,6 +152,46 @@ public class KoalaPlayerController : MonoBehaviour
 
         newPosition.z = hand == leftHand ? leftHandStartPos.z : rightHandStartPos.z;
         hand.transform.position = newPosition;
+    }
+
+    IEnumerator drunkHands()
+    {
+        while (true)
+        {
+            drunkX = Random.Range(-1.0f, 1.0f) * drunkness;
+            drunkY = Random.Range(-1.0f, 1.0f) * drunkness;
+
+            yield return new WaitForSeconds(Random.Range(0.2f, 1.5f));
+        }
+
+    }
+
+    IEnumerator LerpDrunkHands()
+    {
+        while (true)
+        {
+            drunkLerped = new Vector3(Mathf.Lerp(drunkLerped.x, drunkX, Time.deltaTime), Mathf.Lerp(drunkLerped.y, drunkY, Time.deltaTime), 0);
+            yield return new WaitForEndOfFrame();
+
+            if (drunkness > 0.0f)
+            {
+                drunkness = drunkness - Time.deltaTime / 40;
+            }
+            else if (drunkness < 0.0f)
+            {
+                drunkness = 0.0f;
+            }
+
+            if (energy > 0.0f)
+            {
+                energy = energy - Time.deltaTime / 80;
+            }
+            else if (energy < 0.0f)
+            {
+                energy = 0.0f;
+            }
+
+        }
     }
 
     private void ToggleHands()
@@ -138,5 +219,31 @@ public class KoalaPlayerController : MonoBehaviour
         {
             body.transform.rotation = Quaternion.LookRotation(direction);
         }
+    }
+
+    private void RotateTree()
+    {
+        if (Mathf.Abs(body.transform.position.x) > rotateTreeOffset)
+        {
+            float offset = body.transform.position.x > rotateTreeOffset ? rotateTreeOffset : -rotateTreeOffset;
+
+            // Calculate the movement amount
+            float moveAmount = body.transform.position.x - offset;
+
+            // Move the player's body back into the range
+            body.transform.position = new Vector3(offset, body.transform.position.y, body.transform.position.z);
+
+            // Move the hands the same amount
+            leftHand.transform.position -= new Vector3(moveAmount, 0, 0);
+            rightHand.transform.position -= new Vector3(moveAmount, 0, 0);
+
+            // Scroll the texture's UVs based on the movement
+            if (treeMaterial != null)
+            {
+                uvOffset.x += moveAmount * 0.1f; // Adjust this multiplier to control the scrolling speed
+                treeMaterial.SetTextureOffset("_MainTex", uvOffset);
+            }
+        }
+
     }
 }
