@@ -1,3 +1,4 @@
+using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class KoalaPlayerController : MonoBehaviour
     [SerializeField] Transform leftShoulder;
     [SerializeField] Transform rightShoulder;
 
-    [SerializeField] GameObject tree;
+    [SerializeField] GameObject[] trees;
 
     [SerializeField] bool toggleHands;
     [SerializeField] float moveSpeed;
@@ -19,7 +20,16 @@ public class KoalaPlayerController : MonoBehaviour
     [SerializeField] float driftSpeed = 0.5f; // Speed at which the hand drifts downward
     [SerializeField] float yOffset = 0f;
 
-    
+    [SerializeField] float handRadius = 0.5f; // Radius of the hands for collision checks
+    [SerializeField] LayerMask collisionLayer; // Layer mask to specify which layers to check for collisions
+
+    [SerializeField] GameObject[] branchPrefab; // The prefab for the branch
+    [SerializeField] GameObject branchPerent;
+    [SerializeField] float branchSpawnDistance = 8f; // Distance the player must climb to spawn a new branch
+    [SerializeField] float branchRange = 20f; // Range to keep the branches within the player’s view
+    [SerializeField] float branchOffset = 8f;
+    [SerializeField] float branchRotateSpeed = 75f;
+
 
 
     private Vector3 leftHandStartPos;
@@ -35,15 +45,15 @@ public class KoalaPlayerController : MonoBehaviour
 
     private float rotateTreeOffset = 1f;
 
-    private Material treeMaterial; // The material of the tree's renderer
-    private Vector2 uvOffset = Vector2.zero; // The current UV offset of the tree texture
-
-
-
-
+    private Material[] treeMaterials; // Array to store the materials of the tree's renderers
+    private Vector2[] uvOffsets; // Array to store the current UV offsets of the tree textures
 
     float moveDirectionX;
     float moveDirectionY;
+
+    private float lastBranchYPosition = 0f; // To keep track of the last Y position where a branch was spawned
+    private List<GameObject> branches = new List<GameObject>(); // List to keep track of the branches
+
 
     void Update()
     {
@@ -57,6 +67,9 @@ public class KoalaPlayerController : MonoBehaviour
 
         UpdatePlayersBody();
         RotateTree();
+
+        CheckBranchSpawn(); // Check if we need to spawn a new branch
+        CheckBranchDestruction(); // Check if any branches need to be destroyed
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -72,13 +85,21 @@ public class KoalaPlayerController : MonoBehaviour
 
         StartCoroutine(drunkHands());
         StartCoroutine(LerpDrunkHands());
+        SpawnBranch();
 
-        if (tree != null)
+        if (trees != null && trees.Length > 0)
         {
-            Renderer treeRenderer = tree.GetComponent<Renderer>();
-            if (treeRenderer != null)
+            treeMaterials = new Material[trees.Length];
+            uvOffsets = new Vector2[trees.Length];
+
+            for (int i = 0; i < trees.Length; i++)
             {
-                treeMaterial = treeRenderer.material;
+                Renderer treeRenderer = trees[i].GetComponent<Renderer>();
+                if (treeRenderer != null)
+                {
+                    treeMaterials[i] = treeRenderer.material;
+                }
+                uvOffsets[i] = Vector2.zero;
             }
         }
     }
@@ -151,7 +172,12 @@ public class KoalaPlayerController : MonoBehaviour
         }
 
         newPosition.z = hand == leftHand ? leftHandStartPos.z : rightHandStartPos.z;
-        hand.transform.position = newPosition;
+
+        // Check for collisions before updating the hand position
+        if (!Physics.CheckSphere(newPosition, handRadius, collisionLayer))
+        {
+            hand.transform.position = newPosition;
+        }
     }
 
     IEnumerator drunkHands()
@@ -163,7 +189,6 @@ public class KoalaPlayerController : MonoBehaviour
 
             yield return new WaitForSeconds(Random.Range(0.2f, 1.5f));
         }
-
     }
 
     IEnumerator LerpDrunkHands()
@@ -190,7 +215,6 @@ public class KoalaPlayerController : MonoBehaviour
             {
                 energy = 0.0f;
             }
-
         }
     }
 
@@ -237,13 +261,74 @@ public class KoalaPlayerController : MonoBehaviour
             leftHand.transform.position -= new Vector3(moveAmount, 0, 0);
             rightHand.transform.position -= new Vector3(moveAmount, 0, 0);
 
-            // Scroll the texture's UVs based on the movement
-            if (treeMaterial != null)
+            // Apply rotation to the branch parent
+            Quaternion currentRotation = branchPerent.transform.rotation;
+            branchPerent.transform.rotation = currentRotation * Quaternion.Euler(0f, moveAmount * branchRotateSpeed, 0f);
+
+            // Scroll the textures' UVs based on the movement
+            if (treeMaterials != null)
             {
-                uvOffset.x += moveAmount * 0.1f; // Adjust this multiplier to control the scrolling speed
-                treeMaterial.SetTextureOffset("_MainTex", uvOffset);
+                for (int i = 0; i < treeMaterials.Length; i++)
+                {
+                    if (treeMaterials[i] != null)
+                    {
+                        uvOffsets[i].x += moveAmount * 0.1f; // Adjust this multiplier to control the scrolling speed
+                        treeMaterials[i].SetTextureOffset("_MainTex", uvOffsets[i]);
+                    }
+                }
+            }
+            
+        }
+    }
+
+    private void CheckBranchSpawn()
+    {
+        // Get the current Y position of the body
+        float currentY = body.transform.position.y;
+
+        // Check if the player has climbed beyond the branch spawn distance
+        if (currentY - lastBranchYPosition >= branchSpawnDistance)
+        {
+            SpawnBranch();
+            lastBranchYPosition += branchSpawnDistance + Random.Range(-branchSpawnDistance/4 , branchSpawnDistance/4); // Update the last branch Y position
+        }
+    }
+
+    private void SpawnBranch()
+    {
+        // Instantiate the branch prefab
+        GameObject newBranch = Instantiate(branchPrefab[Random.Range(0,branchPrefab.Length)], branchPerent.transform); //perent to branchPerent
+
+        // Set the position of the new branch
+        Vector3 branchPosition = new Vector3(0, body.transform.position.y + branchOffset, 5.96f);
+        newBranch.transform.position = branchPosition;
+
+        // Set a random rotation on the Y axis
+        float randomYRotation = Random.Range(0f, 360f); // Random rotation between 0 and 360 degrees
+        newBranch.transform.rotation = Quaternion.Euler(0f, randomYRotation, 0f); // Apply the rotation
+
+        // Add the branch to the list
+        branches.Add(newBranch);
+    }
+
+    private void CheckBranchDestruction()
+    {
+        // Get the current Y position of the body
+        float currentY = body.transform.position.y;
+
+        // Iterate through the list of branches and destroy those out of range
+        for (int i = branches.Count - 1; i >= 0; i--)
+        {
+            GameObject branch = branches[i];
+            float branchY = branch.transform.position.y;
+
+            // Check if the branch is out of the player’s vertical range
+            if (Mathf.Abs(currentY - branchY) > branchRange)
+            {
+                // Destroy the branch and remove it from the list
+                Destroy(branch);
+                branches.RemoveAt(i);
             }
         }
-
     }
 }
