@@ -2,6 +2,8 @@ using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class KoalaPlayerController : MonoBehaviour
 {
@@ -30,7 +32,18 @@ public class KoalaPlayerController : MonoBehaviour
     [SerializeField] float branchOffset = 8f;
     [SerializeField] float branchRotateSpeed = 75f;
 
+    [SerializeField] Slider drunknessSlider;
+    [SerializeField] Slider energySlider;
+    [SerializeField] TMP_Text drunkValue;
+    [SerializeField] TMP_Text energyValue;
 
+    [SerializeField] TMP_Text currentHight;
+
+
+    [SerializeField] Material handOnMat;
+    [SerializeField] Material handOffMat;
+    [SerializeField] Renderer rightHandRender;
+    [SerializeField] Renderer leftHandRender;
 
     private Vector3 leftHandStartPos;
     private Vector3 rightHandStartPos;
@@ -73,9 +86,11 @@ public class KoalaPlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            drunkness = 1;
-            energy = 1;
+            drunkness = 0f;
+            energy = 1f;
         }
+
+        currentHight.text = body.transform.position.y.ToString("##.##");
     }
 
     void Start()
@@ -102,6 +117,8 @@ public class KoalaPlayerController : MonoBehaviour
                 uvOffsets[i] = Vector2.zero;
             }
         }
+
+        ChangeHandColour();
     }
 
     private void UpdateLeftHand()
@@ -215,13 +232,30 @@ public class KoalaPlayerController : MonoBehaviour
             {
                 energy = 0.0f;
             }
+
+            updateSliderValues();
         }
     }
 
     private void ToggleHands()
     {
         toggleHands = !toggleHands;
-        Debug.Log("Hands toggled: " + toggleHands);
+        ChangeHandColour();
+        //Debug.Log("Hands toggled: " + toggleHands);
+    }
+
+    private void ChangeHandColour()
+    {
+        if (toggleHands)
+        {
+            rightHandRender.material = handOffMat;
+            leftHandRender.material = handOnMat;
+        }
+        else
+        {
+            rightHandRender.material = handOnMat;
+            leftHandRender.material = handOffMat;
+        }
     }
 
     private void UpdatePlayersBody()
@@ -277,7 +311,7 @@ public class KoalaPlayerController : MonoBehaviour
                     }
                 }
             }
-            
+
         }
     }
 
@@ -290,14 +324,14 @@ public class KoalaPlayerController : MonoBehaviour
         if (currentY - lastBranchYPosition >= branchSpawnDistance)
         {
             SpawnBranch();
-            lastBranchYPosition += branchSpawnDistance + Random.Range(-branchSpawnDistance/4 , branchSpawnDistance/4); // Update the last branch Y position
+            lastBranchYPosition += branchSpawnDistance + Random.Range(-branchSpawnDistance / 4, branchSpawnDistance / 4); // Update the last branch Y position
         }
     }
 
     private void SpawnBranch()
     {
         // Instantiate the branch prefab
-        GameObject newBranch = Instantiate(branchPrefab[Random.Range(0,branchPrefab.Length)], branchPerent.transform); //perent to branchPerent
+        GameObject newBranch = Instantiate(branchPrefab[Random.Range(0, branchPrefab.Length)], branchPerent.transform); //perent to branchPerent
 
         // Set the position of the new branch
         Vector3 branchPosition = new Vector3(0, body.transform.position.y + branchOffset, 5.96f);
@@ -330,5 +364,35 @@ public class KoalaPlayerController : MonoBehaviour
                 branches.RemoveAt(i);
             }
         }
+    }
+
+    public void addtoDrunk(float value)
+    {
+        drunkness += value;
+
+        if (drunkness + value < 2)
+            drunkness += value;
+        else
+            drunkness = 2;
+
+        updateSliderValues();
+    }
+    public void addToEnergy(float value)
+    {
+        if (energy + value < 1)
+            energy += value;
+        else
+            energy = 1;
+
+        updateSliderValues();
+    }
+
+    private void updateSliderValues()
+    {
+        drunknessSlider.value = drunkness;
+        energySlider.value = energy;
+
+        drunkValue.text = drunkness.ToString("##.#");
+        energyValue.text = energy.ToString("##.#");
     }
 }
