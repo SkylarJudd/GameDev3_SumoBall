@@ -7,6 +7,9 @@ using TMPro;
 
 public class KoalaPlayerController : MonoBehaviour
 {
+    public bool toggleHands;
+    public bool tutorialDone = false;
+
     [SerializeField] GameObject leftHand;
     [SerializeField] GameObject rightHand;
     [SerializeField] GameObject body;
@@ -16,7 +19,7 @@ public class KoalaPlayerController : MonoBehaviour
 
     [SerializeField] GameObject[] trees;
 
-    [SerializeField] bool toggleHands;
+   
     [SerializeField] float moveSpeed;
     [SerializeField] float maxRadius;
     [SerializeField] float driftSpeed = 0.5f; // Speed at which the hand drifts downward
@@ -45,6 +48,8 @@ public class KoalaPlayerController : MonoBehaviour
     [SerializeField] Renderer rightHandRender;
     [SerializeField] Renderer leftHandRender;
 
+    [SerializeField] KeyVisuals keyVisuals;
+
     private Vector3 leftHandStartPos;
     private Vector3 rightHandStartPos;
 
@@ -66,6 +71,8 @@ public class KoalaPlayerController : MonoBehaviour
 
     private float lastBranchYPosition = 0f; // To keep track of the last Y position where a branch was spawned
     private List<GameObject> branches = new List<GameObject>(); // List to keep track of the branches
+
+    
 
 
     void Update()
@@ -90,7 +97,7 @@ public class KoalaPlayerController : MonoBehaviour
             energy = 1f;
         }
 
-        currentHight.text = body.transform.position.y.ToString("##.##");
+        currentHight.text = " Current Hight: 1 " + body.transform.position.y.ToString("##.##");
     }
 
     void Start()
@@ -376,6 +383,13 @@ public class KoalaPlayerController : MonoBehaviour
             drunkness = 2;
 
         updateSliderValues();
+
+        if (!tutorialDone)
+        {
+            keyVisuals.turnOffControls();
+            tutorialDone = true;
+        }
+
     }
     public void addToEnergy(float value)
     {
