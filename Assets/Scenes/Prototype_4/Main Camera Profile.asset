@@ -58,8 +58,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.31989923
-          value: 0.48404253
+          time: 0.34760705
+          value: 0.39893615
           inSlope: 1
           outSlope: 1
           tangentMode: 0
@@ -67,10 +67,10 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.84382874
-          value: 0.6595745
-          inSlope: 1.3403469
-          outSlope: 1.3403469
+          time: 0.7858942
+          value: 0.7659575
+          inSlope: 0.7541792
+          outSlope: 0.7541792
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -281,10 +281,10 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.268
+    m_Value: 0.41
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.799
+    m_Value: 0.693
   rounded:
     m_OverrideState: 1
     m_Value: 0
@@ -353,10 +353,10 @@ MonoBehaviour:
     m_Value: 9
   intensity:
     m_OverrideState: 1
-    m_Value: 0.206
+    m_Value: 0.337
   response:
     m_OverrideState: 1
-    m_Value: 0.742
+    m_Value: 0.821
   texture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -396,7 +396,7 @@ MonoBehaviour:
     m_Value: 6.1
   focalLength:
     m_OverrideState: 1
-    m_Value: 133
+    m_Value: 124
   bladeCount:
     m_OverrideState: 1
     m_Value: 5
