@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HiveMannager : GameBehaviour 
+public class HiveMannager : GameBehaviour
 {
-    [SerializeField] List<EquationSpawnPoints> equationSpawnPoints = new List<EquationSpawnPoints>();
-    [SerializeField] List<Color> colours = new List<Color>();
+    [SerializeField]
+    List<EquationSpawnPoints> equationSpawnPoints = new List<EquationSpawnPoints>();
+    [SerializeField]
+    List<Color> colours = new List<Color>();
 
 
     public enum Difficulty { EASY, MEDIUM, HARD }
@@ -33,7 +35,7 @@ public class HiveMannager : GameBehaviour
             _ESP.number2Text.text = numberTwo.ToString();
             _ESP.number3Text.text = correctAnswer.ToString();
             _ESP.requiredSign = mathsSign;
-            _ESP.sign1Text.text = operatorSign;
+            _ESP.sign1Text.text = "?";
 
             SetColour(_ESP);
         }

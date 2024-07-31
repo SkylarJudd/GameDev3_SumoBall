@@ -62,12 +62,12 @@ public class BeePlayerController : Singleton<BeePlayerController>
     {
         if (_throttle)
         {
-            beePower += beeLift;
+            beePower += beeLift * Time.deltaTime;
         }
         if (!_throttle)
         {
             if (beePower > 0)
-                beePower -= beeLift;
+                beePower -= beeLift * Time.deltaTime;
             else
                 beePower = 0;
         }
