@@ -24,6 +24,7 @@ public class PauseController : MonoBehaviour
 
     public void Pause()
     {
+        print("Toggle Pause");
         paused = !paused;
         pausePanal.SetActive(paused);
         // if true then do this or that

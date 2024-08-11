@@ -10,6 +10,8 @@ public class KoalaPlayerController : MonoBehaviour
     public bool toggleHands;
     public bool tutorialDone = false;
 
+    [SerializeField] Animator monkeeAnimator;
+
     [SerializeField] GameObject leftHand;
     [SerializeField] GameObject rightHand;
     [SerializeField] GameObject body;
@@ -314,7 +316,7 @@ public class KoalaPlayerController : MonoBehaviour
                     if (treeMaterials[i] != null)
                     {
                         uvOffsets[i].x += moveAmount * 0.1f; // Adjust this multiplier to control the scrolling speed
-                        treeMaterials[i].SetTextureOffset("_MainTex", uvOffsets[i]);
+                        treeMaterials[i].SetTextureOffset("_BaseMap", uvOffsets[i]);
                     }
                 }
             }

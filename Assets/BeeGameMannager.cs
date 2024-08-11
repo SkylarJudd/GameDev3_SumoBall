@@ -20,6 +20,7 @@ public class BeeGameMannager : Singleton<BeeGameMannager>
         if(currentScore == scoreToWin)
         {
             print("You Win");
+            GameEvents.PlayerWin(gameObject);
         }
     }
 
