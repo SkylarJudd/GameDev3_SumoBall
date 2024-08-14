@@ -1595,6 +1595,37 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &518613041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 518613042}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &518613042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518613041}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &544643650
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,7 +1992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: d1b46b8065a0efd42bce2bdadad7f7e6, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -1972,7 +2003,79 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 686164875}
+        m_TargetAssemblyTypeName: FishPongPlayerController, Assembly-CSharp
+        m_MethodName: PlayerOneInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 769e978c-4342-4f0a-8933-1043f91e85bd
+    m_ActionName: Players/MoveP1[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 686164875}
+        m_TargetAssemblyTypeName: FishPongPlayerController, Assembly-CSharp
+        m_MethodName: PlayerTwoInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ee51dd07-f750-4a0f-a666-bf303b130db4
+    m_ActionName: Players/MoveP2[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 647daa44-8b4a-4581-bce9-8f9b49182924
+    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c7261db5-b944-4d06-93a8-8d6f667863ea
+    m_ActionName: UI/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: df4456e8-77d1-404c-b68d-59742cc20d9e
+    m_ActionName: UI/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7660543f-0e37-41ec-a534-6d89564b316a
+    m_ActionName: UI/Point[/Mouse/position,/Pen/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f87dc4d5-28ce-4db8-acc1-7b0ab6ffc4a5
+    m_ActionName: UI/Click[/Mouse/leftButton,/Pen/tip]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 77cefc88-6a2d-4325-8305-5c924aac4e03
+    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 29b5cafc-aefd-4fa5-9dd2-c00798925a3e
+    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: db8ae2a3-8db2-4625-b4f4-e481f6466a51
+    m_ActionName: UI/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7bb498c7-2e80-4431-a529-71ff0553a223
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1482ab85-78c8-46c3-ab33-fc7622618de7
+    m_ActionName: UI/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Players
@@ -1990,8 +2093,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9ac1538f26e7c749bfe4ecbebffe675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 0}
-  player2: {fileID: 0}
+  player1: {fileID: 1162804747}
+  player1MoveSpeed: 0.1
+  player1RotateSpeed: 0
+  player2: {fileID: 1129307017}
+  player2MoveSpeed: 0.1
+  player2RotateSpeed: 0
+  bounds: 5
 --- !u!1 &716395748
 GameObject:
   m_ObjectHideFlags: 0
@@ -2280,14 +2388,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783049463}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: 0.70710695, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: -0.110542774, y: 0, z: -0.22770241}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 152619106}
   m_Father: {fileID: 1129307018}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &799537123
 GameObject:
   m_ObjectHideFlags: 0
@@ -3048,14 +3156,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1129307017}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 0.5, z: 0}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 3.7723343, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 783049464}
   m_Father: {fileID: 686164873}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1141192706
 GameObject:
   m_ObjectHideFlags: 0
@@ -3241,14 +3349,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1162804747}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: 0.5, z: 0}
+  m_LocalRotation: {x: -0, y: 0.7071065, z: -0, w: 0.7071071}
+  m_LocalPosition: {x: -4.1656675, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6752931717364756017}
   m_Father: {fileID: 686164873}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1187295350
 GameObject:
   m_ObjectHideFlags: 0
@@ -4225,7 +4333,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1189516237264499129, guid: d914c404e43cf14479c285fd5c64fc92, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.191369
       objectReference: {fileID: 0}
     - target: {fileID: 1189516237264499129, guid: d914c404e43cf14479c285fd5c64fc92, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4233,23 +4341,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189516237264499129, guid: d914c404e43cf14479c285fd5c64fc92, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.1656677
       objectReference: {fileID: 0}
     - target: {fileID: 1189516237264499129, guid: d914c404e43cf14479c285fd5c64fc92, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071064
       objectReference: {fileID: 0}
     - target: {fileID: 1189516237264499129, guid: d914c404e43cf14479c285fd5c64fc92, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1189516237264499129, guid: d914c404e43cf14479c285fd5c64fc92, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.7071072
       objectReference: {fileID: 0}
     - target: {fileID: 1189516237264499129, guid: d914c404e43cf14479c285fd5c64fc92, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1189516237264499129, guid: d914c404e43cf14479c285fd5c64fc92, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4257,7 +4365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189516237264499129, guid: d914c404e43cf14479c285fd5c64fc92, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 1189516237264499129, guid: d914c404e43cf14479c285fd5c64fc92, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -4299,3 +4407,4 @@ SceneRoots:
   - {fileID: 865640533}
   - {fileID: 1838845619}
   - {fileID: 1514560104}
+  - {fileID: 518613042}
