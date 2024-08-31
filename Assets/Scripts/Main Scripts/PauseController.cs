@@ -30,6 +30,9 @@ public class PauseController : MonoBehaviour
         // if true then do this or that
         Time.timeScale = !paused ? 1.0f : 0.0f;
 
+        Cursor.lockState = !paused ? CursorLockMode.Locked: CursorLockMode.None;
+        Cursor.visible = !paused ?  false : true;
+
     }
 
 }

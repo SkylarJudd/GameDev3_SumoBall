@@ -13,8 +13,8 @@ public class WinScreenController : MonoBehaviour
 
     private void GameEvents_OnPlayerWin(GameObject obj)
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         winscreen.SetActive(true);
         Time.timeScale = 0.0f;
     }

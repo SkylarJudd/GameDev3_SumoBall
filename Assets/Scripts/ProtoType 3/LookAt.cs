@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MoveAndRotateTowardsTarget : MonoBehaviour
+public class LookAt : MonoBehaviour
 {
     [SerializeField] Transform target; // Target to move towards and look at
     [SerializeField] bool lockXRotation = false;
